@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import useForm from "../hooks/useForm";
 
 const initialValue = {
   firstName: "",
@@ -14,17 +15,7 @@ const initialValue = {
 // and replace the necessary stateful logic from CheckoutForm with the hook
 
 const CheckoutForm = (props) => {
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [values, setValues] = useState(initialValue);
-
-  const handleChanges = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setShowSuccessMessage(true);
-  };
+  const [values, showSuccessMessage, setShowSuccessMessage, handleChanges, handleSubmit] = useForm(initialValue);
 
   return (
     <>
@@ -32,27 +23,15 @@ const CheckoutForm = (props) => {
         <h2>Checkout Form</h2>
         <label>
           First Name:
-          <input
-            name="firstName"
-            value={values.firstName}
-            onChange={handleChanges}
-          />
+          <input name="firstName" value={values.firstName} onChange={handleChanges} />
         </label>
         <label>
           Last Name:
-          <input
-            name="lastName"
-            value={values.lastName}
-            onChange={handleChanges}
-          />
+          <input name="lastName" value={values.lastName} onChange={handleChanges} />
         </label>
         <label>
           Address:
-          <input
-            name="address"
-            value={values.address}
-            onChange={handleChanges}
-          />
+          <input name="address" value={values.address} onChange={handleChanges} />
         </label>
         <label>
           City:
