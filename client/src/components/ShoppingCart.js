@@ -1,8 +1,10 @@
 import React from "react";
+import { useHistory } from "react-router-dom";
 
 /********* DO NOT DO ANYTHING IN THIS COMPONENT *********/
 
 export default function ShoppingCart(props) {
+  const history = useHistory();
   const total = props.cart.reduce((sum, d) => sum + d.price, 0);
   return (
     <div className="cart">
@@ -12,10 +14,7 @@ export default function ShoppingCart(props) {
           <div className="plant-details">
             <h2 className="plant-name">{plant.name}</h2>
             <p>${plant.price}</p>
-            <button
-              className="plant-button"
-              onClick={() => props.removeFromCart(plant)}
-            >
+            <button className="plant-button" onClick={() => props.removeFromCart(plant)}>
               Remove
             </button>
           </div>
@@ -23,10 +22,7 @@ export default function ShoppingCart(props) {
       ))}
       <div className="checkout-section">
         <p className="total">Total: ${total}</p>
-        <button
-          className="checkout"
-          onClick={() => props.history.push("/checkout")}
-        >
+        <button className="checkout" onClick={() => history.push("/checkout")}>
           Checkout
         </button>
       </div>

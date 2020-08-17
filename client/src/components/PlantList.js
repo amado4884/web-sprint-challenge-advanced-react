@@ -8,6 +8,7 @@ export default class PlantList extends Component {
     super(props);
     this.state = {
       plants: [],
+      allPlants: [],
     };
   }
 
@@ -19,9 +20,30 @@ export default class PlantList extends Component {
     axios
       .get("http://localhost:3333/plants")
       .then((res) => {
-        this.setState({ ...this.state, plants: [...res.data.plantsData] });
+        let plants = [...res.data.plantsData];
+        this.setState({ ...this.state, plants, allPlants: [...plants] });
       })
       .catch((err) => console.log(err));
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.query !== this.props.query) {
+      if (this.props.query) {
+        const newList = this.state.allPlants.filter((plant) => {
+          return (
+            plant.name.toLowerCase().includes(this.props.query.toLowerCase()) ||
+            plant.description.toLowerCase().includes(this.props.query.toLowerCase()) ||
+            plant.scientificName.toLowerCase().includes(this.props.query.toLowerCase()) ||
+            plant.difficulty.toLowerCase().includes(this.props.query.toLowerCase()) ||
+            plant.light.toLowerCase().includes(this.props.query.toLowerCase())
+          );
+        });
+
+        this.setState({ ...this.state, plants: newList });
+      } else {
+        this.setState({ ...this.state, plants: this.state.allPlants });
+      }
+    }
   }
   /*********  DON'T CHANGE ANYTHING IN THE RENDER FUNCTION *********/
   render() {
