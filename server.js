@@ -8,9 +8,14 @@ server.use(bodyParser.json());
 server.use(cors());
 
 // Data from https://rooted.nyc/
-const plantsData = require("./data/plantData");
+let plantsData = require("./data/plantData");
 
 server.get("/plants", (req, res) => {
+  res.json(plantsData);
+});
+
+server.post("/plants/add", (req, res) => {
+  plantsData = [...plantsData, req.body];
   res.json(plantsData);
 });
 

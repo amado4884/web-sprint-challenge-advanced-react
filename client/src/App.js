@@ -1,15 +1,17 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink, Switch } from "react-router-dom";
 
 import PlantList from "./components/PlantList";
 import ShoppingCart from "./components/ShoppingCart";
 import CheckoutForm from "./components/CheckoutForm";
 
 import "./App.css";
+import Filter from "./components/Filter";
 
 function App() {
   // array of plants that have been added to the cart
   const [cart, setCart] = useState([]);
+  const [query, setQuery] = useState("");
 
   // add a plant to the cart
   const addToCart = (plant) => {
@@ -37,29 +39,21 @@ function App() {
             <li>
               <NavLink to="/cart">
                 Cart
-                <span className="cart-badge">
-                  {cart.length > 0 && cart.length}
-                </span>
+                <span className="cart-badge">{cart.length > 0 && cart.length}</span>
               </NavLink>
             </li>
           </ul>
         </nav>
-        <Route
-          exact
-          path="/"
-          render={() => <PlantList addToCart={addToCart} />}
-        />
-        <Route
-          path="/cart"
-          render={(props) => (
-            <ShoppingCart
-              {...props}
-              cart={cart}
-              removeFromCart={removeFromCart}
-            />
-          )}
-        />
-        <Route path="/checkout" component={CheckoutForm} />
+        <Switch>
+          <Route exact path="/">
+            <Filter setQuery={(q) => setQuery(q)} />
+            <PlantList addToCart={addToCart} query={query} />
+          </Route>
+          <Route path="/cart">
+            <ShoppingCart cart={cart} removeFromCart={removeFromCart} />
+          </Route>
+          <Route path="/checkout" component={CheckoutForm} />
+        </Switch>
       </Router>
     </div>
   );
